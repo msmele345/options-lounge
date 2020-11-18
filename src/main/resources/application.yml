@@ -1,0 +1,16 @@
+spring:
+  jpa:
+    database: MYSQL
+    hibernate:
+      dialect: org.hibernate.dialect.MySQLInnoDBDialect
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        globally_quoted_identifiers: true
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/olounge?useSSL=false
+    username: user
+    password: pass
+    driver-class-name: com.mysql.cj.jdbc.Driver
