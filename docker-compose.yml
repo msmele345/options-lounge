@@ -1,15 +1,34 @@
 version: '3'
 
 services:
-  mysql-db:
-    container_name: mysql-db
+
+  docker-mysql:
+    container_name: docker-mysql
     command: mysqld --default-authentication-plugin=mysql_native_password
     restart: always
-    image: mysql:latest
+    image: mysql
     ports:
       - 3306:3306
+    volumes:
+      - ./sql:/docker-entrypoint-initdb.d
     environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=optionslounge
       - MYSQL_USER=user
       - MYSQL_PASSWORD=pass
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DB=olounge
+
+  options-lounge-app:
+    container_name: options-lounge-app
+    image: oapp/msmele345
+    restart: on-failure
+#    build: ./
+    ports:
+      - 8080:8080
+    environment:
+      - DATABASE_HOST=docker-mysql
+      - DATABASE_USER=user
+      - DATABASE_PASSWORD=pass
+      - DATABASE_NAME=optionslounge
+      - DATABASE_PORT=3306
+    depends_on:
+      - docker-mysql

@@ -4,13 +4,14 @@ spring:
     hibernate:
       dialect: org.hibernate.dialect.MySQLInnoDBDialect
       ddl-auto: update
-    show-sql: false
+    show-sql: true
     properties:
       hibernate:
         globally_quoted_identifiers: true
 
   datasource:
-    url: jdbc:mysql://localhost:3306/olounge?useSSL=false
+    url: jdbc:mysql://docker-mysql:3306/optionslounge?useSSL=false
     username: user
     password: pass
     driver-class-name: com.mysql.cj.jdbc.Driver
+
