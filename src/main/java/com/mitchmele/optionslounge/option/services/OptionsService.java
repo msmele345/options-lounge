@@ -12,11 +12,15 @@ public class OptionsService {
 
     private final OptionRepository optionRepository;
 
-    public List<StockOption> fetchAllOptions() {
-        return optionRepository.findAll();
+    public List<StockOption> fetchAllOptions(String type) {
+
+        if (type == null) {
+            return optionRepository.findAll();
+        }
+        return optionRepository.findAllByType(type.toUpperCase());
     }
 
-    public List<StockOption> fetchAllOptionsByType(String type) {
-        return optionRepository.findAllByType(type);
+    public List<StockOption> fetchAllOptionsForSymbol(String symbol) {
+        return optionRepository.findAllBySymbol(symbol);
     }
 }

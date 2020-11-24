@@ -14,6 +14,7 @@ import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
 import static java.util.Arrays.asList;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -41,31 +42,52 @@ class StockOptionsControllerTest {
     void getAllOptions_returnsAllOptionsCurrentlyOpenInDb() throws Exception {
 
         StockOption abcCall = StockOption.builder().symbol("ABC").strikePrice(22.0).month("JULY").type("CALL").build();
-        StockOption abcPut = StockOption.builder().symbol("ABC").strikePrice(25.0).month("DEC").type("PAT").build();
+        StockOption abcPut = StockOption.builder().symbol("ABC").strikePrice(25.0).month("DEC").type("PUT").build();
 
         List<StockOption> expected = asList(abcCall, abcPut);
-        when(optionsService.fetchAllOptions())
+        when(optionsService.fetchAllOptions(null))
                 .thenReturn(expected);
 
         mockMvc
                 .perform(get("/options"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(mapper.writeValueAsString(expected)));
+
+        verify(optionsService).fetchAllOptions(null);
     }
 
     @Test
-    void getOptionsByType_returnsAllOptionsOfProvidedType() throws Exception {
+    void getAllOptions_returnsAllOptionForTypeWhenProvided_caseInsensitive() throws Exception {
+
+        StockOption abcPut1 = StockOption.builder().symbol("ABC").strikePrice(22.0).month("JULY").type("PUT").build();
+        StockOption abcPut2 = StockOption.builder().symbol("ABC").strikePrice(25.0).month("DEC").type("PUT").build();
+
+        List<StockOption> expected = asList(abcPut1, abcPut2);
+        when(optionsService.fetchAllOptions(anyString()))
+                .thenReturn(expected);
+
+        mockMvc
+                .perform(get("/options?type=PUT"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(mapper.writeValueAsString(expected)));
+
+        verify(optionsService).fetchAllOptions("PUT");
+
+    }
+
+    @Test
+    void getOptionsBySymbol_returnsAllOptionsOfProvidedType() throws Exception {
 
         StockOption abcPut1 = StockOption.builder().symbol("PUT").strikePrice(22.0).month("JULY").type("CALL").build();
-        StockOption abcPut2 = StockOption.builder().symbol("PUT").strikePrice(25.0).month("DEC").type("PAT").build();
+        StockOption abcPut2 = StockOption.builder().symbol("PUT").strikePrice(25.0).month("DEC").type("PUT").build();
 
 
         List<StockOption> puts = asList(abcPut1, abcPut2);
-        when(optionsService.fetchAllOptionsByType(anyString()))
+        when(optionsService.fetchAllOptionsForSymbol(anyString()))
                 .thenReturn(puts);
 
         mockMvc
-                .perform(get("/options/stocks?type=PUT"))
+                .perform(get("/options/stocks?symbol=ABC"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(mapper.writeValueAsString(puts)));
 

@@ -9,4 +9,6 @@ import java.util.List;
 public interface OptionRepository extends JpaRepository<StockOption, Integer> {
 
     List<StockOption> findAllByType(String type);
+
+    List<StockOption> findAllBySymbol(String symbol);
 }

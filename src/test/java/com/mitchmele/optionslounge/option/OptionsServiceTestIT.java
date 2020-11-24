@@ -36,6 +36,14 @@ class OptionsServiceTestIT {
         optionRepository.save(abcCall);
     }
 
+    /*
+    @Before
+    @After
+    public void reset() {
+        optionRepository.deleteAll();
+    }
+    */
+
     @Test
     void doesTheThing() {
 
@@ -47,7 +55,7 @@ class OptionsServiceTestIT {
                 .type("CALL")
                 .build();
 
-        List<StockOption> actual = optionsService.fetchAllOptions();
+        List<StockOption> actual = optionsService.fetchAllOptions(null);
 
         assertThat(actual.get(0)).isEqualToIgnoringGivenFields(expected, "createdAt");
     }

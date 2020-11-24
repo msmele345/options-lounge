@@ -3,19 +3,17 @@ package com.mitchmele.optionslounge.option;
 import com.mitchmele.optionslounge.option.model.StockOption;
 import com.mitchmele.optionslounge.option.repository.OptionRepository;
 import com.mitchmele.optionslounge.option.services.OptionsService;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
-
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -27,33 +25,56 @@ class OptionsServiceTest {
     @InjectMocks
     private OptionsService optionsService;
 
-    @Before
-    @After
-    public void reset() {
-        optionRepository.deleteAll();
-    }
-
     @Test
-    void fetchAllOptions_returnsAllInDb() {
+    void fetchAllOptions_callsFindAll_whenNoArgProvided_returnsAllInDb() {
 
         when(optionRepository.findAll())
                 .thenReturn(singletonList(StockOption.builder().build()));
 
-        List<StockOption> actual = optionsService.fetchAllOptions();
+        optionsService.fetchAllOptions(null);
 
-        assertThat(actual).hasSize(1);
+        verify(optionRepository).findAll();
+    }
+
+    @Test
+    void fetchAllOptions_callsFindByType_whenTypeIsProvided_returnsAllInDb() {
+
+        StockOption abcPut1 = StockOption.builder().symbol("ABC").strikePrice(22.0).month("JULY").type("PUT").build();
+
+
+        when(optionRepository.findAllByType(anyString()))
+                .thenReturn(singletonList(abcPut1));
+
+        optionsService.fetchAllOptions("PUT");
+
+        verify(optionRepository).findAllByType("PUT");
     }
 
     @Test
     void fetchAllOptions_returnsAllOptionsFromRepoOfSpecificType() {
-        StockOption abcPut1 = StockOption.builder().symbol("PUT").strikePrice(22.0).month("JULY").type("CALL").build();
-        StockOption abcPut2 = StockOption.builder().symbol("PUT").strikePrice(25.0).month("DEC").type("PAT").build();
+        StockOption abcPut1 = StockOption.builder().symbol("ABC").strikePrice(22.0).month("JULY").type("PUT").build();
+        StockOption dycPut2 = StockOption.builder().symbol("DYC").strikePrice(25.0).month("DEC").type("PUT").build();
 
-        List<StockOption> expected = asList(abcPut1, abcPut2);
+        List<StockOption> expected = asList(abcPut1, dycPut2);
         when(optionRepository.findAllByType(anyString()))
                 .thenReturn(expected);
 
-        List<StockOption> actual = optionsService.fetchAllOptionsByType("PUT");
+        List<StockOption> actual = optionsService.fetchAllOptions("PUT");
         assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
+    void fetchAllOptionsForSymbol_returnsAllOptionsForProvidedSymbol() {
+        StockOption mmnPut = StockOption.builder().symbol("MMN").strikePrice(22.0).month("JULY").type("PUT").build();
+        StockOption mmnCall = StockOption.builder().symbol("MMN").strikePrice(25.0).month("SEPT").type("CALL").build();
+
+        List<StockOption> expected = asList(mmnPut, mmnCall);
+        when(optionRepository.findAllBySymbol(anyString()))
+                .thenReturn(expected);
+
+        List<StockOption> actual = optionsService.fetchAllOptionsForSymbol("MMN");
+        assertThat(actual).isEqualTo(expected);
+
+        verify(optionRepository).findAllBySymbol("MMN");
     }
 }
