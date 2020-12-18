@@ -1,5 +1,6 @@
 package com.mitchmele.optionslounge.option;
 
+import com.mitchmele.optionslounge.option.exception.InvalidOptionTypeException;
 import com.mitchmele.optionslounge.option.model.StockOption;
 import com.mitchmele.optionslounge.option.repository.OptionRepository;
 import com.mitchmele.optionslounge.option.services.OptionsService;
@@ -12,6 +13,7 @@ import java.util.List;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -76,5 +78,13 @@ class OptionsServiceTest {
         assertThat(actual).isEqualTo(expected);
 
         verify(optionRepository).findAllBySymbol("MMN");
+    }
+
+    @Test
+    void fetchAllOptions_throwsInvalidOptionsTypeException_ifProvidedTypeIsNotCallOrPut() {
+
+        assertThatThrownBy(() -> optionsService.fetchAllOptions("sdfds"))
+                .isInstanceOf(InvalidOptionTypeException.class)
+                .hasMessage("Please Enter a Valid Options Type");
     }
 }

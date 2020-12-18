@@ -10,12 +10,14 @@ spring:
         globally_quoted_identifiers: true
 
   datasource:
-    url: jdbc:mysql://docker-mysql:3306/optionslounge?useSSL=false
+    url: jdbc:mysql://localhost:3306/optionslounge?useSSL=false
     username: user
     password: pass
     driver-class-name: com.mysql.cj.jdbc.Driver
 
+#  data:
+#    mongodb:
+#      uri: mongodb://localhost:27017/tradeRepo
 
-  #  data:
-  #    mongodb:
-  #      uri: mongodb://mongodb-1:27017/tradeRepo
+server:
+  port: 8081
