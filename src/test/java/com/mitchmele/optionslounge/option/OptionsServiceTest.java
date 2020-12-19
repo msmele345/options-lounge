@@ -1,6 +1,7 @@
 package com.mitchmele.optionslounge.option;
 
 import com.mitchmele.optionslounge.option.exception.InvalidOptionTypeException;
+import com.mitchmele.optionslounge.option.model.OptionsRequest;
 import com.mitchmele.optionslounge.option.model.StockOption;
 import com.mitchmele.optionslounge.option.repository.OptionRepository;
 import com.mitchmele.optionslounge.option.services.OptionsService;
@@ -86,5 +87,85 @@ class OptionsServiceTest {
         assertThatThrownBy(() -> optionsService.fetchAllOptions("sdfds"))
                 .isInstanceOf(InvalidOptionTypeException.class)
                 .hasMessage("Please Enter a Valid Options Type");
+    }
+
+    @Test
+    void fetchOptions_takesOptionsRequestAndQueriesForTypeWithSymbolIfProvided() {
+
+        OptionsRequest optionsRequest = OptionsRequest.builder()
+                .symbol("ABC")
+                .type("PUT")
+                .build();
+
+        StockOption mmnPut = StockOption.builder().symbol("ABC").strikePrice(22.0).month("JULY").type("PUT").build();
+        StockOption mmnCall = StockOption.builder().symbol("ABC").strikePrice(25.0).month("SEPT").type("PUT").build();
+
+        List<StockOption> expected = asList(mmnPut, mmnCall);
+        when(optionRepository.findAllByTypeAndSymbol(anyString(), anyString()))
+                .thenReturn(expected);
+
+        List<StockOption> actual = optionsService.fetchOptions(optionsRequest);
+
+        assertThat(actual).isEqualTo(expected);
+        verify(optionRepository).findAllByTypeAndSymbol("PUT", "ABC");
+    }
+
+    @Test
+    void fetchOptions_onlyQueriesForTypeIfSymbolIsNotProvided() {
+
+        OptionsRequest optionsRequest = OptionsRequest.builder()
+                .type("PUT")
+                .build();
+
+        StockOption mmnPut = StockOption.builder().symbol("ABC").strikePrice(22.0).month("JULY").type("PUT").build();
+        StockOption mmnCall = StockOption.builder().symbol("ABC").strikePrice(25.0).month("SEPT").type("PUT").build();
+
+        List<StockOption> expected = asList(mmnPut, mmnCall);
+        when(optionRepository.findAllByType(anyString()))
+                .thenReturn(expected);
+
+        List<StockOption> actual = optionsService.fetchOptions(optionsRequest);
+
+        assertThat(actual).isEqualTo(expected);
+        verify(optionRepository).findAllByType("PUT");
+    }
+
+    @Test
+    void fetchOptions_onlyQueriesForSymbolIfTypeIsNotProvided() {
+
+        OptionsRequest optionsRequest = OptionsRequest.builder()
+                .symbol("ABC")
+                .build();
+
+        StockOption mmnPut = StockOption.builder().symbol("ABC").strikePrice(22.0).month("JULY").type("PUT").build();
+        StockOption mmnCall = StockOption.builder().symbol("ABC").strikePrice(25.0).month("SEPT").type("CALL").build();
+
+        List<StockOption> expected = asList(mmnPut, mmnCall);
+        when(optionRepository.findAllBySymbol(anyString()))
+                .thenReturn(expected);
+
+        List<StockOption> actual = optionsService.fetchOptions(optionsRequest);
+
+        assertThat(actual).isEqualTo(expected);
+        verify(optionRepository).findAllBySymbol("ABC");
+    }
+
+
+    @Test
+    void fetchOptions_returnsAllOptionsIfRequestIsEmpty() {
+
+        OptionsRequest optionsRequest = OptionsRequest.builder().build();
+
+        StockOption mmnPut = StockOption.builder().symbol("ABC").strikePrice(22.0).month("JULY").type("PUT").build();
+        StockOption mmnCall = StockOption.builder().symbol("DDY").strikePrice(25.0).month("SEPT").type("CALL").build();
+
+        List<StockOption> expected = asList(mmnPut, mmnCall);
+        when(optionRepository.findAll())
+                .thenReturn(expected);
+
+        List<StockOption> actual = optionsService.fetchOptions(optionsRequest);
+
+        assertThat(actual).isEqualTo(expected);
+        verify(optionRepository).findAll();
     }
 }

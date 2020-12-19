@@ -10,5 +10,7 @@ public interface OptionRepository extends JpaRepository<StockOption, Integer> {
 
     List<StockOption> findAllByType(String type);
 
+    List<StockOption> findAllByTypeAndSymbol(String type, String symbol);
+
     List<StockOption> findAllBySymbol(String symbol);
 }
