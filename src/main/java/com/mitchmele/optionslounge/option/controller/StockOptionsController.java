@@ -21,13 +21,8 @@ public class StockOptionsController {
         return optionsService.fetchAllOptions(type);
     }
 
-    //create transformers (dates)
-    @GetMapping("/options/stocks")
-    public List<StockOption> getOptionsBySymbol(@RequestParam String symbol) {
-        return optionsService.fetchAllOptionsForSymbol(symbol);
-    }
-
     @PostMapping("/options")
+    @CrossOrigin
     public List<StockOption> getOptionsData(@RequestBody OptionsRequest request) {
         return optionsService.fetchOptions(request);
     }

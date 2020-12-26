@@ -80,24 +80,6 @@ class StockOptionsControllerTest {
     }
 
     @Test
-    void getOptionsBySymbol_returnsAllOptionsOfProvidedType() throws Exception {
-
-        StockOption abcPut1 = StockOption.builder().symbol("PUT").strikePrice(22.0).month("JULY").type("CALL").build();
-        StockOption abcPut2 = StockOption.builder().symbol("PUT").strikePrice(25.0).month("DEC").type("PUT").build();
-
-
-        List<StockOption> puts = asList(abcPut1, abcPut2);
-        when(optionsService.fetchAllOptionsForSymbol(anyString()))
-                .thenReturn(puts);
-
-        mockMvc
-                .perform(get("/options/stocks?symbol=ABC"))
-                .andExpect(status().isOk())
-                .andExpect(content().string(mapper.writeValueAsString(puts)));
-
-    }
-
-    @Test
     void getOptions_passesRequestToService_fetchOptions() throws Exception {
 
         StockOption abcPut1 = StockOption.builder().symbol("ABC").strikePrice(22.0).month("JULY").type("PUT").build();

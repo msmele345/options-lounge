@@ -67,21 +67,6 @@ class OptionsServiceTest {
     }
 
     @Test
-    void fetchAllOptionsForSymbol_returnsAllOptionsForProvidedSymbol() {
-        StockOption mmnPut = StockOption.builder().symbol("MMN").strikePrice(22.0).month("JULY").type("PUT").build();
-        StockOption mmnCall = StockOption.builder().symbol("MMN").strikePrice(25.0).month("SEPT").type("CALL").build();
-
-        List<StockOption> expected = asList(mmnPut, mmnCall);
-        when(optionRepository.findAllBySymbol(anyString()))
-                .thenReturn(expected);
-
-        List<StockOption> actual = optionsService.fetchAllOptionsForSymbol("MMN");
-        assertThat(actual).isEqualTo(expected);
-
-        verify(optionRepository).findAllBySymbol("MMN");
-    }
-
-    @Test
     void fetchAllOptions_throwsInvalidOptionsTypeException_ifProvidedTypeIsNotCallOrPut() {
 
         assertThatThrownBy(() -> optionsService.fetchAllOptions("sdfds"))

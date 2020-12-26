@@ -30,10 +30,6 @@ public class OptionsService {
         return optionRepository.findAllByType(type.toUpperCase());
     }
 
-    public List<StockOption> fetchAllOptionsForSymbol(String symbol) {
-        return optionRepository.findAllBySymbol(symbol);
-    }
-
     public List<StockOption> fetchOptions(OptionsRequest request) {
 
         if(isEmpty(request.getSymbol()) && isEmpty(request.getType())) {
