@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
@@ -13,8 +15,8 @@ import java.util.Date;
 @NoArgsConstructor
 public class LiveQuote {
 
-    private Bid bid;
-    private Ask ask;
+    private BigDecimal bid;
+    private BigDecimal ask;
     private String symbol;
 
     @CreationTimestamp

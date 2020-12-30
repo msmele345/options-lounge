@@ -18,4 +18,8 @@ public class AskService {
     public List<Ask> getAsks() {
         return askDORepository.findAll();
     }
+
+    public List<Ask> getAllAsksBySymbol(String symbol) {
+        return askDORepository.findAllBySymbol(symbol);
+    }
 }

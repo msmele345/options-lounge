@@ -3,7 +3,7 @@ package com.mitchmele.optionslounge.option.controller;
 import com.mitchmele.optionslounge.option.model.Ask;
 import com.mitchmele.optionslounge.option.model.Bid;
 import com.mitchmele.optionslounge.option.model.QuotePrice;
-import com.mitchmele.optionslounge.option.services.LiveQuotesOrchestrator;
+import com.mitchmele.optionslounge.option.services.StockDetailsOrchestrator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,19 +24,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
-class QuotesControllerTest {
+class StockDetailControllerTest {
 
     @Mock
-    private LiveQuotesOrchestrator liveQuotesOrchestrator;
+    private StockDetailsOrchestrator stockDetailsOrchestrator;
 
     @InjectMocks
-    private QuotesController quotesController;
+    private StockDetailController stockDetailController;
 
     private MockMvc mockMvc;
 
     @BeforeEach
     void setUp() {
-        mockMvc = MockMvcBuilders.standaloneSetup(quotesController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(stockDetailController).build();
     }
 
     @Test
@@ -59,7 +59,7 @@ class QuotesControllerTest {
                 .build();
 
         List<QuotePrice> expected = asList(bid, ask);
-        when(liveQuotesOrchestrator.getLiveQuotes())
+        when(stockDetailsOrchestrator.getLiveQuotes())
                 .thenReturn(expected);
 
 

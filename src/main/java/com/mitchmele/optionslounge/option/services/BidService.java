@@ -15,4 +15,8 @@ public class BidService {
     public List<Bid> getBids() {
         return bidDORepository.findAll();
     }
+
+    public List<Bid> getAllBidsBySymbol(String symbol) {
+        return bidDORepository.findAllBySymbol(symbol);
+    }
 }

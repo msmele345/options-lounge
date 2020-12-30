@@ -58,14 +58,14 @@ class LiveQuotesBuilderTest {
 
         LiveQuote expected1 = LiveQuote.builder()
                 .symbol("ABC")
-                .bid(bid)
-                .ask(ask)
+                .bid(BigDecimal.valueOf(20.01))
+                .ask(BigDecimal.valueOf(20.10))
                 .build();
 
         LiveQuote expected2 = LiveQuote.builder()
                 .symbol("DDY")
-                .bid(bid2)
-                .ask(ask2)
+                .bid(BigDecimal.valueOf(5.01))
+                .ask(BigDecimal.valueOf(5.10))
                 .build();
 
         List<LiveQuote> expected = asList(expected1, expected2);
