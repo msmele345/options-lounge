@@ -5,8 +5,6 @@ import com.mitchmele.optionslounge.option.repository.StockMetadataRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
-
 @Service
 @RequiredArgsConstructor
 public class StockMetadataService {

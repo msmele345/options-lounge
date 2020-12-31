@@ -3,7 +3,6 @@ package com.mitchmele.optionslounge.option.services;
 import com.mitchmele.optionslounge.option.model.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.List;
@@ -29,13 +28,13 @@ public class StockDetailsOrchestrator {
         BigDecimal highestBid = bidService.getAllBidsBySymbol(symbol).stream()
                 .map(Bid::getBidPrice)
                 .max(Comparator.naturalOrder())
-                .orElse(null);
+                .orElse(BigDecimal.ZERO);
 
 
         BigDecimal lowestOffer = askService.getAllAsksBySymbol(symbol).stream()
                 .map(Ask::getAskPrice)
                 .min(Comparator.naturalOrder())
-                .orElse(null);
+                .orElse(BigDecimal.ZERO);
 
         StockMetadata stockMetadata = stockMetadataService.getMetadata(symbol);
 

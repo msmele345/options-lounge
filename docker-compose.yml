@@ -33,16 +33,16 @@ services:
     depends_on:
       - docker-mysql
 
-  mongodb-1:
-    depends_on:
-      - docker-mysql
-    image: mongo
-    container_name: mongodb-1
-    restart: always
-    volumes:
-      - ./mongo-seed:/mongo-seed
-      command:
-        /mongo-seed/import.sh
-    ports:
-      - 27017:27017
+#  mongodb-1:
+#    depends_on:
+#      - docker-mysql
+#    image: mongo
+#    container_name: mongodb-1
+#    restart: always
+#    volumes:
+#      - ./mongo-seed:/mongo-seed
+#      command:
+#        /mongo-seed/import.sh
+#    ports:
+#      - 27017:27017
 ## OR, copy stocks.json into container manually and run script from import.json: docker cp foo.txt mycontainer:/foo.txt

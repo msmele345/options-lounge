@@ -53,7 +53,7 @@ class StockOptionsControllerTest {
                 .thenReturn(expected);
 
         mockMvc
-                .perform(get("/options"))
+                .perform(get("/api/v1/options"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(mapper.writeValueAsString(expected)));
 
@@ -71,7 +71,7 @@ class StockOptionsControllerTest {
                 .thenReturn(expected);
 
         mockMvc
-                .perform(get("/options?type=PUT"))
+                .perform(get("/api/v1/options?type=PUT"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(mapper.writeValueAsString(expected)));
 
@@ -92,7 +92,7 @@ class StockOptionsControllerTest {
         String request = mapper.writeValueAsString(requestObject);
 
         mockMvc
-                .perform(post("/options")
+                .perform(post("/api/v1/options")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(request)
                 )
