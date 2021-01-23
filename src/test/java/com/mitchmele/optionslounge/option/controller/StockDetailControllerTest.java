@@ -1,7 +1,7 @@
 package com.mitchmele.optionslounge.option.controller;
 
 import com.mitchmele.optionslounge.option.model.*;
-import com.mitchmele.optionslounge.option.services.StockDetailsOrchestrator;
+import com.mitchmele.optionslounge.option.services.StockMetadataOrchestrator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class StockDetailControllerTest {
 
     @Mock
-    private StockDetailsOrchestrator stockDetailsOrchestrator;
+    private StockMetadataOrchestrator stockMetadataOrchestrator;
 
     @InjectMocks
     private StockDetailController stockDetailController;
@@ -44,20 +44,18 @@ class StockDetailControllerTest {
 
         Bid bid = Bid.builder()
                 .bidPrice(BigDecimal.valueOf(20.01))
-                .id(1)
                 .symbol("ABC")
                 .timeStamp(mockDate)
                 .build();
 
         Ask ask = Ask.builder()
                 .askPrice(BigDecimal.valueOf(20.10))
-                .id(2)
                 .symbol("ABC")
                 .timeStamp(mockDate)
                 .build();
 
         List<QuotePrice> expected = asList(bid, ask);
-        when(stockDetailsOrchestrator.getLiveQuotes())
+        when(stockMetadataOrchestrator.getLiveQuotes())
                 .thenReturn(expected);
 
         ObjectMapper mapper = new ObjectMapper();
@@ -73,7 +71,6 @@ class StockDetailControllerTest {
         StockMetadata expectedMetadata = StockMetadata.builder()
                 .ticker("ABC")
                 .sector("Financial")
-                .change(0.064)
                 .industry("Exchange Traded Fund")
                 .company("Mellon Focused Growth ADR ETF")
                 .averageVolume(10.07)
@@ -90,7 +87,7 @@ class StockDetailControllerTest {
                 .stockMetadata(expectedMetadata)
                 .build();
 
-        when(stockDetailsOrchestrator.getStockDetails(anyString())).thenReturn(expected);
+        when(stockMetadataOrchestrator.getStockDetails(anyString())).thenReturn(expected);
 
         ObjectMapper objectMapper = new ObjectMapper();
 
@@ -98,6 +95,6 @@ class StockDetailControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(objectMapper.writeValueAsString(expected)));
 
-        verify(stockDetailsOrchestrator).getStockDetails("ABC");
+        verify(stockMetadataOrchestrator).getStockDetails("ABC");
     }
 }

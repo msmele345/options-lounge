@@ -52,7 +52,7 @@ class RestAdviceTest {
                 .build();
 
         mockMvc
-                .perform(get("/options"))
+                .perform(get("/api/v1/options"))
                 .andExpect(status().is5xxServerError())
                 .andExpect(content().string(mapper.writeValueAsString(expected)));
 
@@ -71,7 +71,7 @@ class RestAdviceTest {
                 .build();
 
         mockMvc
-                .perform(get("/options?type=BB"))
+                .perform(get("/api/v1/options?type=BB"))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string(mapper.writeValueAsString(expected)));
 

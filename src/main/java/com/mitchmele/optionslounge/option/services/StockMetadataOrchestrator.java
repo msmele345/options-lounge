@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
-public class StockDetailsOrchestrator {
+public class StockMetadataOrchestrator {
 
     private final AskService askService;
     private final BidService bidService;

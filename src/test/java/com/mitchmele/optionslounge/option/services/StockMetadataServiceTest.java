@@ -27,7 +27,6 @@ class StockMetadataServiceTest {
         StockMetadata expected = StockMetadata.builder()
                 .ticker("AADR")
                 .sector("Financial")
-                .change(0.064)
                 .averageVolume(10.07)
                 .build();
 

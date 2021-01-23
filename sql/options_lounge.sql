@@ -55,6 +55,33 @@ VALUES
 /*!40000 ALTER TABLE `stock_option` ENABLE KEYS */;
 UNLOCK TABLES;
 
+DROP TABLE IF EXISTS `post`;
+
+CREATE TABLE `post` (
+                                `id` int(11) NOT NULL AUTO_INCREMENT,
+                                `title` varchar(45) NOT NULL,
+                                `content` varchar(255) NOT NULL,
+                                `author` varchar(45) DEFAULT NULL,
+                                PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+LOCK TABLES `post` WRITE;
+/*!40000 ALTER TABLE `post` DISABLE KEYS */;
+
+INSERT INTO `post` (`id`, `title`, `content`, `author`, `created_ts`)
+VALUES
+(1,'Bad Beat on AAPL','Bought 200 at 150.00','Bob','2020-05-21'),
+(2,'Bad Beat on GOOG','Bought 200 at 1550.00','Fred','2020-04-21'),
+(3,'Made Millions on TSLA','Bought 1000 at 1150.00','Mitch','2020-08-27'),
+(4,'Lost it all on Penny Stocks','Bought 20000 at .50','Tim','2020-10-01'),
+(5,'Lots Of Options Vol','Implied Vol is above 50%','Eric','2020-08-21'),
+(6,'Heavy Options Volume on AADR','Bought 2 OCT 5.00 PUTS @ 1.50','Connor','2020-11-21'),
+(7,'Heavy Options Volume on BBBCY','Bought 10 DEC 15.00 CALLS @ 21.50','Foo','2020-12-11'),
+(8,'Low Volume on Indexes today','Bought 1000 SPY @ 121.50','Barf','2020-12-15');
+
+/*!40000 ALTER TABLE `post` ENABLE KEYS */;
+UNLOCK TABLES;
+
 
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;

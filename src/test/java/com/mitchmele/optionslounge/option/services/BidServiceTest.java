@@ -33,14 +33,14 @@ class BidServiceTest {
 
         Bid bid = Bid.builder()
                 .bidPrice(BigDecimal.valueOf(20.01))
-                .id(1)
+                .id("1")
                 .symbol("ABC")
                 .timeStamp(mockDate)
                 .build();
 
         Bid bid2 = Bid.builder()
                 .bidPrice(BigDecimal.valueOf(120.21))
-                .id(2)
+                .id("2")
                 .symbol("AAPL")
                 .timeStamp(mockDate)
                 .build();
@@ -61,14 +61,14 @@ class BidServiceTest {
 
         Bid bid = Bid.builder()
                 .bidPrice(BigDecimal.valueOf(20.01))
-                .id(1)
+                .id("1")
                 .symbol("ABC")
                 .timeStamp(mockDate)
                 .build();
 
         Bid bid2 = Bid.builder()
                 .bidPrice(BigDecimal.valueOf(20.22))
-                .id(2)
+                .id("2")
                 .symbol("ABC")
                 .timeStamp(mockDate)
                 .build();

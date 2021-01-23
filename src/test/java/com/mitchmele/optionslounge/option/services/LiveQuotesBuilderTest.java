@@ -30,28 +30,28 @@ class LiveQuotesBuilderTest {
 
         Bid bid = Bid.builder()
                 .bidPrice(BigDecimal.valueOf(20.01))
-                .id(1)
+                .id("1")
                 .symbol("ABC")
                 .timeStamp(mockDate)
                 .build();
 
         Ask ask = Ask.builder()
                 .askPrice(BigDecimal.valueOf(20.10))
-                .id(2)
+                .id("2")
                 .symbol("ABC")
                 .timeStamp(mockDate)
                 .build();
 
         Bid bid2 = Bid.builder()
                 .bidPrice(BigDecimal.valueOf(5.01))
-                .id(3)
+                .id("3")
                 .symbol("DDY")
                 .timeStamp(mockDate)
                 .build();
 
         Ask ask2 = Ask.builder()
                 .askPrice(BigDecimal.valueOf(5.10))
-                .id(4)
+                .id("4")
                 .symbol("DDY")
                 .timeStamp(mockDate)
                 .build();

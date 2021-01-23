@@ -1,7 +1,6 @@
 package com.mitchmele.optionslounge.option.services;
 
 import com.mitchmele.optionslounge.option.model.*;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -16,7 +15,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class StockDetailsOrchestratorTest {
+class StockMetadataOrchestratorTest {
 
     @Mock
     private AskService askService;
@@ -28,7 +27,7 @@ class StockDetailsOrchestratorTest {
     private StockMetadataService stockMetadataService;
 
     @InjectMocks
-    private StockDetailsOrchestrator stockDetailsOrchestrator;
+    private StockMetadataOrchestrator stockMetadataOrchestrator;
 
     @Test
     void getAllQuotes_returnsListOfQuotePrices() {
@@ -37,14 +36,14 @@ class StockDetailsOrchestratorTest {
 
         Bid bid = Bid.builder()
                 .bidPrice(BigDecimal.valueOf(20.01))
-                .id(1)
+                .id("1")
                 .symbol("ABC")
                 .timeStamp(mockDate)
                 .build();
 
         Ask ask = Ask.builder()
                 .askPrice(BigDecimal.valueOf(20.10))
-                .id(2)
+                .id("2")
                 .symbol("ABC")
                 .timeStamp(mockDate)
                 .build();
@@ -52,7 +51,7 @@ class StockDetailsOrchestratorTest {
         when(bidService.getBids()).thenReturn(asList(bid));
         when(askService.getAsks()).thenReturn(asList(ask));
 
-        List<QuotePrice> actual = stockDetailsOrchestrator.getLiveQuotes();
+        List<QuotePrice> actual = stockMetadataOrchestrator.getLiveQuotes();
 
         assertThat(actual).isEqualTo(asList(bid, ask));
     }
@@ -64,7 +63,7 @@ class StockDetailsOrchestratorTest {
 
         Bid bid = Bid.builder()
                 .bidPrice(BigDecimal.valueOf(20.01))
-                .id(1)
+                .id("1")
                 .symbol("ABC")
                 .timeStamp(mockDate)
                 .build();
@@ -72,21 +71,21 @@ class StockDetailsOrchestratorTest {
 
         Bid bid2 = Bid.builder()
                 .bidPrice(BigDecimal.valueOf(20.10))
-                .id(2)
+                .id("2")
                 .symbol("ABC")
                 .timeStamp(mockDate)
                 .build();
 
         Ask ask = Ask.builder()
                 .askPrice(BigDecimal.valueOf(20.20))
-                .id(2)
+                .id("2")
                 .symbol("ABC")
                 .timeStamp(mockDate)
                 .build();
 
         Ask ask2 = Ask.builder()
                 .askPrice(BigDecimal.valueOf(20.13))
-                .id(2)
+                .id("2")
                 .symbol("ABC")
                 .timeStamp(mockDate)
                 .build();
@@ -97,7 +96,6 @@ class StockDetailsOrchestratorTest {
         StockMetadata expectedMetadata = StockMetadata.builder()
                 .ticker("ABC")
                 .sector("Financial")
-                .change(0.064)
                 .industry("Exchange Traded Fund")
                 .company("Mellon Focused Growth ADR ETF")
                 .averageVolume(10.07)
@@ -116,7 +114,7 @@ class StockDetailsOrchestratorTest {
                 .stockMetadata(expectedMetadata)
                 .build();
 
-        StockDetailsResponse actual = stockDetailsOrchestrator.getStockDetails("ABC");
+        StockDetailsResponse actual = stockMetadataOrchestrator.getStockDetails("ABC");
 
         assertThat(actual).isEqualTo(expected);
 

@@ -1,0 +1,28 @@
+task standUpMongo(type: Exec) {
+    workingDir "$rootDir/docker"
+    description "Standup MongoDb"
+    commandLine "./start_mongo.sh"
+}
+
+
+task standDownMongo(type: Exec) {
+    workingDir "$rootDir/docker"
+    description "StandDown MongoDb"
+    commandLine "docker-compose", "down"
+}
+
+task integrationTest(type: Test) {
+    description 'IT tests'
+
+    scanForTestClasses = false
+    outputs.upToDateWhen {false}
+
+    useJUnitPlatform {
+        includeTags 'IT'
+    }
+    testLogging {
+        events "passed", "skipped", "failed"
+        showStackTraces true
+        exceptionFormat "full"
+    }
+}
